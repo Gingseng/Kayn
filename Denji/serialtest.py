@@ -25,7 +25,13 @@ print ('ByteSize        =', serialObj.bytesize)
 print ('Parity          =', serialObj.parity)
 print ('StopBits        =', serialObj.stopbits)
 
+print ("listening port")
 Receivedstring = serialObj.readline()
+time.sleep(5)
+serialObj.close('COM4')
+
 print (Receivedstring)
 
-serialObj.close()
+
+
+
