@@ -1,15 +1,14 @@
+import time
 import os
-import serial
-from conf import *
 
-
-
-
-
-serialObj = serial.Serial ()
-port= porta("port")
-baudrate = baud("baudrate")
-time = timeout("timing")
-print(port)
-print(baudrate)
-print(time)
+contador = 0
+while (contador<10):  
+        contador = contador+1
+        print (contador)
+        time.sleep(1)
+if (contador == 10):
+        os.system("cls")
+            
+    
+     
+    
