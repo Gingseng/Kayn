@@ -1,19 +1,23 @@
 import os
 import time
-from datetime import datetime
-from conf import *
+from datetime import *
 
 import serial
-arquivo = open('conf.txt', 'r')
+import configparser
+
+#leitura e declaração de arquivos
+arquivo = open('logs.txt', 'r')
 linha = arquivo.readline()
 
+cfgini = configparser.ConfigParser()
+cfgini.read('config.ini')
 
-serialObj = serial.Serial(port = porta("ports"))
-baudrate = baud("baudrate")
-timeout = timeouta(str("timing"))
-bytesize = bytesiz("bytez")
-stopbits = stopb ("stopbit")
-
+serialObj = serial.Serial(
+    port = cfgini.get('Setup', 'Porta'),
+    baudrate = cfgini.getint('Setup','Brate'),
+    bytesize = cfgini.getint('Setup','Bytesize'),
+    parity = cfgini.get('Setup','Parity'),
+    stopbits = cfgini.getint('Setup', 'Stop-bits'))
 os.system("color 0a")
 os.system("cls")
 
@@ -34,16 +38,13 @@ print ("\n <<<<\\-----------------test de campo------------------//>>>>\n")
 print (stringer, "\n")
 print ("Lendo porta... \n")
 time.sleep (3)
-print ("Designed port set     ->",serialObj.port, ("\n"))
+print ("Designed port set     ->",serialObj.port,)
 time.sleep (2)
-print ("DEFAULT BYTESIZE SET   ->",str(serialObj.bytesize), ("\n"))
+print ("DEFAULT BYTESIZE SET   ->",serialObj.bytesize)
 time.sleep (2)
-print ("Default parity:", serialObj.parity, ("\n"))
+print ("Default parity:", serialObj.parity,)
 time.sleep (2)
-
-
-serialObj.stopbits = 1
-print ("DEFAULT STOP BITS SETED -> ", str(serialObj.stopbits), ("\n"))
+print ("DEFAULT STOP BITS SETED -> ", str(serialObj.stopbits))
 time.sleep (2)
 os.system ("cls")
 
@@ -66,11 +67,13 @@ print ('Baudrate        =', serialObj.baudrate)
 print ('ByteSize        =', serialObj.bytesize)
 print ('Parity          =', serialObj.parity)
 print ('StopBits        =', serialObj.stopbits)
+
 #---------------------------------------------------------------
 
 #aqui irá ocorrer o salvamento das variaveis em um arquivo log
-
-file = open("logs.txt","a")
+loglead = dataehora("%d-%m")
+logleadp = loglead+'.log'
+file = open(logleadp,"a")
 file.write("---------logs---------- \n")
 file.write("Date/Time: ")
 file.write(stringer)
@@ -97,13 +100,20 @@ def writereading(x):
     time.sleep(0.05)
     dates = (str(serialObj.readline()))
     return dates
+contador = 0
+while True(contador<10):
+    value = writereading("x") 
+    contador = contador+1
+    print(("Data:--------------------"),value, contador ) 
+   
+    if (contador == 10):
+        os.system("cls")
 
-while True:
-    value = writereading("x")
-    print(("Data:"),value) 
+
+
     if (value != ("b''")):
         file = open("logs.txt","a")
-        file.write("Valor de leitura        =")
+        file.write("Valor de leitura        =", stringer)
         file.write ("\n")
         file.write (stringer)
         file.write ("\n")
@@ -113,4 +123,6 @@ while True:
         file.close()
     else:
         os.system ("cls")
+
+
 #ATUALIZADO 10/11/2022 - João Santos 
